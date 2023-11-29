@@ -2,10 +2,10 @@ import React from 'react'
 import './Header.css'
 import logo from '../assets/logo.png'
 import { Button } from '@mui/material'
-import { Link } from 'react-router-dom/cjs/react-router-dom'
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom'
 
 function Header() {
- 
+ const history = useHistory();
   return (
     <div className='header'>
         <div className="header__left">
@@ -13,10 +13,11 @@ function Header() {
         </div>
         < div className="header__right">
           <Link to='/login'>
-            <Button className='login__button' >Log in </Button>
+            <Button className='login__button' onClick={() => history.push('/login')}>Log in </Button>
             </Link>
-            <Button className='signup__button'>Sign Up</Button>
-        
+            <Link to='/register'>
+            <Button className='signup__button' onClick={() => history.push('/register')}>Sign Up</Button>
+            </Link>
         </div>
     </div>
   )
