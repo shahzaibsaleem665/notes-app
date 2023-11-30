@@ -38,7 +38,7 @@ function Login() {
         <form className='login__form'>
           <input type='email' required={true} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
           <input type='password' required={true} value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
-          <p>Forgot password? <a href='/forgetPassword'>Reset Password</a> </p>
+          <p>Forgot password? <a href='/forget'>Reset Password</a> </p>
         </form>
         <Link to='/main'>
         <Button className='signin__button' onClick={signIn}> Sign In</Button>

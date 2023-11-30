@@ -11,6 +11,7 @@ import Register from "./Pages/Register";
 import Main from "./Pages/Main";
 import { useEffect, useState } from "react";
 import { auth } from "./utilities/Firebase";
+import Forget from "./Pages/Forget";
 
 
 
@@ -38,6 +39,9 @@ function App() {
           <Route path='/login'>
             <Login />
           </Route>
+          <Route path='/forget'>
+         <Forget/>
+       </Route>
           <Route path='/register'>
             <Register />
           </Route>

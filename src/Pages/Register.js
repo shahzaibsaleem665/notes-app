@@ -26,8 +26,6 @@ function Register() {
       history.push('/main');
     })
    })
-   
-
   }
   return (
     <div className='register'>
