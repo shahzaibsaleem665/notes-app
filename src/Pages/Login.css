@@ -5,19 +5,20 @@
     width: 100vw;
     background-color: white;
     font-family: sans-serif;
+    background: url('../assets/login_bg.jpg');
+    background-size: cover;
 }
 .login__container { 
-    background-color: whitesmoke;
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 5px 5px 5px  black;
+    box-shadow: 0 0 10px  black;
 }
 .login__container > h2 {
-    font-weight: 400;
-    padding-bottom: 10px;
+    font-weight: 600;
 }
 .login__container > p {
     font-size: 14px;
@@ -26,7 +27,7 @@
 .login__form { 
     display: flex;
     flex-direction: column;
-    padding-top: 40px;
+    padding-top: 20px;
     font-size: 14px;
 }
 .login__form > input { 
@@ -43,7 +44,7 @@
 }
 .login__form > p{
     font-family: sans-serif;
-    padding-top: 20px; 
+    padding-bottom: 10px;
 }
 .login__form > p > a {
     text-decoration: none;
@@ -55,16 +56,15 @@
    color: #ffbf00 ;
 
 }
-.login__container > Button {
+.signin__button {
     margin-top: 40px;
     color: black !important;
     border: 1px solid black !important;
     background-color: #ffbf00 !important;
     width: 15vw;
-    
 }
-.login__container > Button:hover {
+.signin__button:hover {
     cursor: pointer !important;
-    background-color: transparent !important;
+    background-color: whitesmoke  !important ;
     border: 1px solid #ffbf00 !important;
 }
