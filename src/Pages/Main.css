@@ -1,0 +1,17 @@
+.main {
+    top: 0;
+}
+.main__container {
+    top: 0;
+    display: flex;
+    max-width: 70%;
+    flex-wrap: wrap;
+padding-left: 15%;
+padding-top: 5%;
+    margin: 20px;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.main__container > * {
+    flex: 0 0 25%;
+}

@@ -1,0 +1,44 @@
+.card {
+    margin: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+    border: 1px solid lightgray;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+.card:hover {
+    border: 1px solid black;
+}
+  
+  .card > h1 {
+    text-align: center; 
+    margin: 0;
+    height: 200px;
+  }
+  
+  .card__info {
+      border-radius: 10px;
+      border: 1;
+      padding-left: 10px;
+      background-color: white;
+      border-top: 1px solid lightgray;
+      border-radius: 0px;
+
+      
+    }
+  
+    .card__info > h3 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .card__info > p {
+      font-size: 12px;
+      font-weight: 300;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
