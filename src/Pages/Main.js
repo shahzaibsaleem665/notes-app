@@ -3,6 +3,7 @@ import './Main.css'
 import Card from '../Components/Card'
 import HeaderMain from './HeaderMain'
 
+
 function Main() {
   return (
     <div className='main'>

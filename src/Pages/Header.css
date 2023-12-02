@@ -1,28 +1,18 @@
 .header {
-    top: 0;
     display: flex;
     flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
     align-items: center;
+    width: 100%;
     background-color: whitesmoke;
-    padding-top: 5px;
-    padding-bottom: 5px;
+
 }
 .header__left {
-    margin-left: 50px;
-}
-.header__left > img {
-    width: 100px;
-    height: 60px;
-    padding-left: 20px;
+    display: flex;
+    flex:0.7;
+    margin: 10px;
 }
 .header__right {
     display: flex;
-    flex: 0.4;
-    margin-right: 50px;
-    justify-content: space-between;
-
 }
 .login__button {
     color: black !important;
@@ -33,7 +23,9 @@
     color: black !important;
     border: 1px solid black !important;
     background-color: #ffbf00 !important;
-    width: 15vw;
+    width: 15vw ;
+    margin-left: 20px !important;
+
 }
 .login__button:hover {
     cursor: pointer !important;
