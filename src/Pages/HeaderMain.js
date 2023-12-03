@@ -1,10 +1,12 @@
 import React from 'react'
 import './HeaderMain.css'
-import { Avatar } from '@mui/material'
+import { Avatar, IconButton } from '@mui/material'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import {auth} from '../utilities/Firebase'
 import LogoutIcon from '@mui/icons-material/Logout';
-import logo from "../assets/logo.png"
+import logo1 from "../assets/logo1.png"
+import logo from "../assets/logo.png";
+import SearchIcon from '@mui/icons-material/Search';
 function HeaderMain() {
     const history = useHistory();
 
@@ -27,9 +29,16 @@ function HeaderMain() {
           <div className="header__left">
             <img src={logo} alt='Logo text' />
         </div>
+        <div className="headerMain__middle">
+          <input type='text' placeholder='search'/>
+          <SearchIcon />
+          
+        </div>
         < div className="header__right">
-            <Avatar src={logo} />
+            <Avatar className='headerMain__avatar' src={logo1.png} />
+            <IconButton>
             <LogoutIcon className='logout' onClick={signOut} />
+            </IconButton>
         </div>
     </div>
   )

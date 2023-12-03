@@ -6,8 +6,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: whitesmoke;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    border-bottom: 1px solid black;
 }
 .header__left {
     margin-left: 50px;
@@ -17,14 +16,70 @@
     height: 60px;
     padding-left: 20px;
 }
+.headerMain__middle {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 9px auto;
+ 
+}
+.headerMain__middle > input {
+    display: flex;
+    flex:0.5;
+   outline: none;
+   border: 1px solid black;
+   border-radius: 20px;
+   height: 32px;
+   width: 100%;
+   font-size: 16px;
+   text-transform: capitalize;
+   padding-left: 10px;
+   color: black;
+
+   background: transparent;
+}
+.headerMain__middle >input::placeholder {
+    text-transform:capitalize;
+    font-size: 16px;
+    color: black;
+    font-weight: normal;
+    opacity: 0.7;
+}
+.headerMain__middle > .MuiSvgIcon-root {
+    position: absolute;
+    margin-left: 35%;
+    color: black ;
+    font-size: 30px;
+    
+}
+.headerMain__middle > .MuiSvgIcon-root:hover {
+    cursor: pointer;
+    color: #ffbf00 !important;     
+}
 .header__right {
     display: flex;
-    max-width: 120px;
     margin-right: 50px;
     justify-content: space-between;
     align-items: center;
+    width: 100px;
+
 }
-.header__right > .logout {
-    border: 1px solid black;
-    border-radius: 20px;
+.logout {
+    color: black;
+}
+.logout:hover {
+    color: #ffbf00 !important;
+    cursor: pointer;
+}
+.headerMain__avatar {
+    height: 30px !important;
+    width: 30px !important;
+    border-radius: 50%;
+    overflow: hidden !important;
+    color: black !important;
+}
+.headerMain__avatar:hover {
+    cursor: pointer;
 }

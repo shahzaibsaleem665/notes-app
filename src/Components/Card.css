@@ -8,11 +8,13 @@
     width: 15vw;
     border: 1px solid lightgray;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   }
 .card:hover {
     border: 1px solid #ffbf00;
+    transform: scale(1.05); /* Zoom in on hover */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
-  
   .card > h1 {
     text-align: center;
     margin: 0;

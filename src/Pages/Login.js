@@ -15,6 +15,7 @@ function Login() {
 
   const signIn = (e) => {
     e.preventDefault();
+    history.push('/main');
     auth.signInWithEmailAndPassword(email, password).then((usercred) => {
       const user = usercred.user;
       db.collection('User SignIN').doc(user.uid).set({
@@ -22,9 +23,7 @@ function Login() {
         loginTime: firebase.firestore.FieldValue.serverTimestamp()
       })
       .then(() => {
-        alert('User Signed in');
-      history.push('/main');
-     
+        alert('User Signed in');     
       })
     }).catch((error) => alert(error.message));
   }

@@ -15,18 +15,6 @@ function Main() {
 
         <Card  title="New Doc" description="New document added" date="10 May 2023" />
         <Card  title="New Doc" description="New document added" date="10 May 2023" />
-
-        <Card  title="New Doc" description="New document added" date="10 May 2023" />
-
-        <Card  title="New Doc" description="New document added" date="10 May 2023" />
-
-        <Card  title="New Doc" description="New document added" date="10 May 2023" />
-
-        <Card  title="New Doc" description="New document added" date="10 May 2023" />
-
-
-        <Card  title="New Doc" description="New document added" date="10 May 2023" />
-
       </div>
     </div>
   )
