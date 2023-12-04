@@ -9,7 +9,7 @@ import logo from "../assets/logo.png";
 import SearchIcon from '@mui/icons-material/Search';
 function HeaderMain() {
     const history = useHistory();
-
+  const user = auth.currentUser;
     const signOut = (event) => {
         event.preventDefault(); // Prevent the default form submission behavior, if applicable
       
@@ -35,7 +35,7 @@ function HeaderMain() {
           
         </div>
         < div className="header__right">
-            <Avatar className='headerMain__avatar' src={logo1.png} />
+            <Avatar className='headerMain__avatar'>{user.email[0].toUpperCase()}</Avatar>
             <IconButton>
             <LogoutIcon className='logout' onClick={signOut} />
             </IconButton>

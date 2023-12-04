@@ -19,7 +19,7 @@ function Register() {
     db.collection('Users').add({
       Email : usercred.user.email,
       Password: password,
-      Name: fullname,
+      fullname: fullname,
       Timestamp : firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
       alert('User Added!');

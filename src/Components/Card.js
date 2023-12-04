@@ -2,6 +2,7 @@ import React from 'react'
 import "./Card.css"
 
 function Card({title, description, date}) {
+ 
   return (
     <div className='card'>
         <h1>{title}</h1>
@@ -9,7 +10,6 @@ function Card({title, description, date}) {
             <h3>{description}</h3>
             <p>{date}</p>
         </div>
-
     </div>
   )
 }

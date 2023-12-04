@@ -7,7 +7,7 @@
     flex-direction: column;
     width: 15vw;
     border: 1px solid lightgray;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:  sans-serif;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   }
 .card:hover {
@@ -19,6 +19,7 @@
     text-align: center;
     margin: 0;
     height: 150px;
+    background-color: whitesmoke;
   }
   
   .card__info {

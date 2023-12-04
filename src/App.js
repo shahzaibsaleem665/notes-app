@@ -12,6 +12,7 @@ import Main from "./Pages/Main";
 import { useEffect, useState } from "react";
 import { auth } from "./utilities/Firebase";
 import Forget from "./Pages/Forget";
+import WriteNote from "./Pages/WriteNote";
 
 
 
@@ -35,6 +36,9 @@ function App() {
     <Switch>
           <Route path='/main'>
             {user ? <Main /> : <Home />}
+          </Route>
+          <Route path='/writenote'>
+            {user ? <WriteNote /> : <Home />}
           </Route>
           <Route path='/login'>
             <Login />
