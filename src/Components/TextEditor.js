@@ -15,11 +15,19 @@ export const TextEditor = () => {
   const handleSavePlainText = () => {
     const { value } = state;
     if (value) {
+      // Get the desired file name from the user
+      const fileName = window.prompt("Enter the file name:", "document.txt");
+
+      // Check if the user canceled or entered an empty name
+      if (fileName === null || fileName.trim() === "") {
+        return;
+      }
+
       const plainText = value.replace(/<[^>]*>/g, ""); // Remove HTML tags
       const blob = new Blob([plainText], { type: "text/plain" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "document.txt";
+      link.download = fileName;
       link.click();
     }
   };
