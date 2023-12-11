@@ -23,14 +23,14 @@ export const TextEditor = () => {
   );
 
   useEffect(() => {
-    // Initialize the state with the content of the latest document
-    if (docs && docs.length > 0) {
-      setState({ value: docs[docs.length - 1].content });
-    } else {
-      setState({value: ""});
-    }
+    // Initialize the state with an empty content
+    setState({ value: "" });
+    
+    // If you want to load the content of the latest document when available, uncomment the following lines
+    // if (docs && docs.length > 0) {
+    //   setState({ value: docs[docs.length - 1].content });
+    // }
   }, [docs]);
-
   const handleChange = (value) => {
     setState({ value });
   };
@@ -68,15 +68,36 @@ export const TextEditor = () => {
         callback: (pdf) => {
           // Save the PDF after conversion
           pdf.save(fileName);
+          handleSave();
+          setState({ value: "" });
         },
       });
     }
-    setState({ value: "" });
+    
     // Navigate back to the main page
     history.push("/main");
   };
   
+  const handleSave = () => {
+    const { value } = state;
 
+    // Check if a document exists
+    const existingDocument = docs && docs.length > 0 ? docs[docs.length - 1] : null;
+
+    if (existingDocument) {
+      // Update the existing document with new content
+      db.collection(`users/${user?.uid}/documents`).doc(existingDocument.id).update({
+        content: value,
+        updatedAt: new Date(),
+      });
+    } else {
+      // Create a new document in the Firestore collection
+      db.collection(`users/${user?.uid}/documents`).add({
+        content: value,
+        createdAt: new Date(),
+      });
+    }
+  };
   
 
   return (
@@ -86,7 +107,7 @@ export const TextEditor = () => {
         theme="snow"
         value={state.value}
         onChange={handleChange}
-        placeholder={"Write something awesome..."}
+        placeholder={"Start taking notes...."}
         modules={modules}
         formats={formats}
         style={{ height: "500px" }}
