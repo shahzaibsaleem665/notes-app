@@ -66,3 +66,29 @@
 background-color: white;
 border-radius: 5px;
 }
+@media only screen and (max-width: 1120px) {
+    .main__blankCard {
+        max-width: 15vw;
+    }
+}
+
+@media only screen and (max-width: 895px) {
+    .main__blankCard {
+        max-width: 22vw;
+    }
+    .main__container {
+        max-width: 70%;
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+@media only screen and (max-width: 480px) {
+    .main__blankCard {
+        max-width: 100%
+    }
+    .main__container {
+        max-width: 100%;
+        grid-template-columns: repeat(1, 1fr); 
+        margin-right: 15%;
+
+    }
+}

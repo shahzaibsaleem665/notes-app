@@ -7,8 +7,15 @@ import { Button } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import  { auth,db } from "../utilities/Firebase";
+import jsPDF from "jspdf";
+import  html2pdf  from "html2pdf.js";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
+
 
 export const TextEditor = () => {
+
+  const history = useHistory();
   const [user] = useAuthState(auth);
   const [state, setState] = React.useState({ value: null });
   const [docs, loading] = useCollectionData(
@@ -19,54 +26,58 @@ export const TextEditor = () => {
     // Initialize the state with the content of the latest document
     if (docs && docs.length > 0) {
       setState({ value: docs[docs.length - 1].content });
+    } else {
+      setState({value: ""});
     }
   }, [docs]);
 
   const handleChange = (value) => {
     setState({ value });
   };
+ 
 
-  
-  const handleSavePlainText = () => {
+
+
+  const handleSaveAsPDF = () => {
     const { value } = state;
     if (value) {
-      // Get the desired file name from the user
-      const fileName = window.prompt("Enter the file name:", "document.txt");
-
+      // Prompt the user for the filename and location
+      const fileName = window.prompt("Enter the file name:", "document.pdf");
+  
       // Check if the user canceled or entered an empty name
       if (fileName === null || fileName.trim() === "") {
         return;
       }
-
-      const plainText = value.replace(/<[^>]*>/g, ""); // Remove HTML tags
-      const blob = new Blob([plainText], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = fileName;
-      link.click();
-    }
-  };
-
-  const handleSave = () => {
-    const { value } = state;
-
-    // Check if a document exists
-    const existingDocument = docs && docs.length > 0 ? docs[docs.length - 1] : null;
-
-    if (existingDocument) {
-      // Update the existing document with new content
-      db.collection(`users/${user?.uid}/documents`).doc(existingDocument.id).update({
-        content: value,
-        updatedAt: new Date(),
+  
+      // Create a new jsPDF instance
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 20,
+        marginBottom: 20,
       });
-    } else {
-      // Create a new document in the Firestore collection
-      db.collection(`users/${user?.uid}/documents`).add({
-        content: value,
-        createdAt: new Date(),
+  
+      // Convert HTML content to PDF using html2pdf
+      html2pdf(value, {
+        margin: 10,
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        html2canvas: { scale: 2 }, // adjust scale as needed
+        callback: (pdf) => {
+          // Save the PDF after conversion
+          pdf.save(fileName);
+        },
       });
     }
+    setState({ value: "" });
+    // Navigate back to the main page
+    history.push("/main");
   };
+  
+
+  
 
   return (
     <div className="textEditor">
@@ -80,8 +91,7 @@ export const TextEditor = () => {
         formats={formats}
         style={{ height: "500px" }}
       />
-      <Button onClick={handleSave}>Save to Firestore</Button>
-      <Button onClick={handleSavePlainText}>Save to Local Device</Button>
+      <Button onClick={handleSaveAsPDF}>Save as Pdf</Button>
     </div>
   );
 };

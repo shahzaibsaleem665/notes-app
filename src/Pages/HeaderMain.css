@@ -86,3 +86,34 @@
 .headerMain__avatar:hover {
     cursor: pointer;
 }
+@media only screen and (max-width:1070px) {
+    .headerMain__middle > .MuiSvgIcon-root {
+        margin-left: 30%;     
+       }
+  }
+  
+  @media only screen and (max-width: 800px) {
+    .headerMain__middle > .MuiSvgIcon-root {
+     margin-left: 25%;
+        
+    }
+  }
+  @media only screen and (max-width: 650px) {
+    .headerMain {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .headerMain__middle {
+      display: none;
+  }
+  .header__right {
+    margin-right: 20px;
+    max-width: fit-content;
+  }
+  .header__left {
+    margin-left: 20px;
+}
+.header__left > img {
+    padding-left: 10px;
+}
+  }
