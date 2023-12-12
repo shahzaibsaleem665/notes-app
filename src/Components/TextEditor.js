@@ -10,65 +10,68 @@ import  { auth, db } from "../utilities/Firebase";
 import jsPDF from "jspdf";
 import html2pdf from "html2pdf.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import logo1 from '../assets/logo1.png'
+import firebase from 'firebase/compat/app';
 
 export const TextEditor = () => {
   const history = useHistory();
-  const [state, setState] = useState({ value: "", fileName: "document.pdf" }); // Added fileName state
+  const [state, setState] = useState({ value: "", fileName: "document.pdf" });
   const [user] = useAuthState(auth);
   const [docs, loading] = useCollectionData(
-    db.collection(`Docs/${user?.uid}/documents`).orderBy("createdAt")
+    db.collection(`Docs/${user?.uid}/documents`).orderBy("timestamp")
   );
 
   useEffect(() => {
-    setState({ value: "", fileName: "document.pdf" }); // Reset fileName when docs change
+    setState({ value: "", fileName: "document" });
   }, [docs]);
 
   const handleChange = (value) => {
     setState((prev) => ({ ...prev, value }));
   };
 
+  const handleFilenameChange = (e) => {
+    const newFileName = e.target.value;
+    setState((prev) => ({ ...prev, fileName: newFileName }));
+  };
+
   const handleSave = () => {
     const { value, fileName } = state;
 
-    // Check if a document exists
     const existingDocument = docs && docs.length > 0 ? docs[docs.length - 1] : null;
 
     if (existingDocument) {
-      // Update the existing document with new content
       db.collection(`Docs/${user?.uid}/documents`).doc(existingDocument.id).set({
         content: value,
         fileName,
-        updatedAt: new Date(),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
     } else {
-      // Create a new document in the Firestore collection
       db.collection(`Docs/${user?.uid}/documents`).add({
         content: value,
         fileName,
-        createdAt: new Date(),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
     }
   };
 
   const handleChanges = () => {
-    handleSave();
+   
     handleSaveAsPDF();
+    handleSave();
   };
 
   const handleSaveAsPDF = () => {
     const { value, fileName } = state;
+
     if (value) {
-      // Prompt the user for the filename and location
       const newFileName = window.prompt("Enter the file name:", fileName);
 
-      // Check if the user canceled or entered an empty name
       if (newFileName === null || newFileName.trim() === "") {
         return;
       }
 
-      setState((prev) => ({ ...prev, fileName: newFileName })); // Update fileName
+      setState((prev) => ({ ...prev, fileName: newFileName }));
 
-      // Create a new jsPDF instance
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -79,26 +82,31 @@ export const TextEditor = () => {
         marginBottom: 20,
       });
 
-      // Convert HTML content to PDF using html2pdf
       html2pdf(value, {
         margin: 10,
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        html2canvas: { scale: 2 }, // adjust scale as needed
+        html2canvas: { scale: 2 },
         callback: (pdf) => {
-          // Save the PDF after conversion
-          pdf.save(fileName);
-          setState({ value: "", fileName: "document.pdf" }); // Reset state
+          pdf.save(newFileName); // Use the updated filename here
+          setState({ value: "", fileName: "document" });
         },
       });
 
-      // Navigate back to the main page
       history.push("/main");
     }
   };
 
   return (
     <div className="textEditor">
-      <h2>Edit File Name: {state.fileName}</h2>
+      <div className="textEditor__header">
+        <img src={logo1} onClick={() => history.push('/main')} />
+      <input
+        type="text"
+        placeholder={state.fileName}
+        value={state.fileName}
+        onChange={handleFilenameChange}
+      />
+      </div>
       <EditorToolbar />
       <ReactQuill
         theme="snow"
