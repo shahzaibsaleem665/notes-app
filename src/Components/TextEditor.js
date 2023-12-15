@@ -4,8 +4,6 @@ import EditorToolbar, { modules, formats } from "./EditorToolbar";
 import "react-quill/dist/quill.snow.css";
 import "./TextEditor.css";
 import { Button } from "@mui/material";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import  { auth, db } from "../utilities/Firebase";
 import jsPDF from "jspdf";
 import html2pdf from "html2pdf.js";
@@ -14,16 +12,13 @@ import logo1 from '../assets/logo1.png'
 import firebase from 'firebase/compat/app';
 
 export const TextEditor = () => {
+  const user = auth.currentUser?.uid;
   const history = useHistory();
   const [state, setState] = useState({ value: "", fileName: "document.pdf" });
-  const [user] = useAuthState(auth);
-  const [docs, loading] = useCollectionData(
-    db.collection(`Docs/${user?.uid}/documents`).orderBy("timestamp")
-  );
 
   useEffect(() => {
     setState({ value: "", fileName: "document" });
-  }, [docs]);
+  }, []);
 
   const handleChange = (value) => {
     setState((prev) => ({ ...prev, value }));
@@ -36,17 +31,8 @@ export const TextEditor = () => {
 
   const handleSave = () => {
     const { value, fileName } = state;
-
-    const existingDocument = docs && docs.length > 0 ? docs[docs.length - 1] : null;
-
-    if (existingDocument) {
-      db.collection(`Docs/${user?.uid}/documents`).doc(existingDocument.id).set({
-        content: value,
-        fileName,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    } else {
-      db.collection(`Docs/${user?.uid}/documents`).add({
+  if (user)  {
+      db.collection('Docs').add({
         content: value,
         fileName,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),

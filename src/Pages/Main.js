@@ -5,20 +5,13 @@ import HeaderMain from './HeaderMain'
 import add_sign from '../assets/add_sign.png'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom'
 import { auth, db } from '../utilities/Firebase'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollection, useCollectionData } from 'react-firebase-hooks/firestore'
-import { doc } from 'firebase/firestore'
 
-
-// ... (other imports)
 
 function Main() {
   const history = useHistory();
   const [documents, setDocuments] = useState([]);
-  const [user] = useAuthState(auth);
-  const [snapshot, loading, error] = useCollection(
-    db.collection(`Docs/${user?.uid}/documents`).orderBy("createdAt")
-  );
+  const user = auth.currentUser;
+ 
 
   const writeNote = (event) => {
     event.preventDefault();
@@ -26,20 +19,17 @@ function Main() {
   };
 
   useEffect(() => {
-    if (!loading && snapshot) {
-      const formattedDocuments = snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
+    if (user) {
+      db.collection('Docs').where('userId', '==', user.uid).onSnapshot((snapshot) => setDocuments(
+        snapshot.docs.map((doc) => ({
           id: doc.id,
-          fileName: data.fileName,
-          content: data.content,
-          timestamp: data.timestamp, // Convert Firestore timestamp to JavaScript Date
-        };
-      });
-
-      setDocuments(formattedDocuments);
+          data: doc.data(),
+        }))
+        )
+        );
+        console.error('error in documents: ', Error);
     }
-  }, [loading, snapshot]);
+  }, []);
 
   return (
     <div className='main'>
@@ -53,12 +43,17 @@ function Main() {
       </div>
       <hr />
       <h2>Recent Documents</h2>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
       <div className="main__container">
-        {documents.map((doc) => (
-          <Card key={doc.id} title={doc.fileName} description={doc.content} date={doc.timestamp} />
-        ))}
+      {documents.map(({id, data : {content, fileName, timestamp, }}) => (
+        <Card
+        id={id} 
+        key={id}
+        title={fileName}
+        description={content}
+        date={timestamp}
+        />
+      ))}
+      console.log(data);
       </div>
     </div>
   );
