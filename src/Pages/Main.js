@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import './Main.css'
-import Card from '../Components/Card'
-import HeaderMain from './HeaderMain'
-import add_sign from '../assets/add_sign.png'
-import { useHistory } from 'react-router-dom/cjs/react-router-dom'
-import { auth, db } from '../utilities/Firebase'
-
+import React, { useEffect, useState } from 'react';
+import './Main.css';
+import Card from '../Components/Card';
+import HeaderMain from './HeaderMain';
+import add_sign from '../assets/add_sign.png';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom';
+import { auth, db } from '../utilities/Firebase';
 
 function Main() {
   const history = useHistory();
   const [documents, setDocuments] = useState([]);
   const user = auth.currentUser;
- 
 
   const writeNote = (event) => {
     event.preventDefault();
@@ -19,17 +17,27 @@ function Main() {
   };
 
   useEffect(() => {
-    if (user) {
-      db.collection('Docs').where('userId', '==', user.uid).onSnapshot((snapshot) => setDocuments(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-        )
-        );
-        console.error('error in documents: ', Error);
-    }
-  }, []);
+    const fetchDocuments = async () => {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          // Fetch user documents from Firestore
+          const snapshot = await db.collection('Docs').where('userId', '==', auth.currentUser.uid).get();
+
+          const documentsData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(), // Assuming the actual data is nested under a 'data' field
+          }));
+
+          setDocuments(documentsData);
+        }
+      } catch (error) {
+        console.error('Error fetching documents: ', error);
+      }
+    };
+
+    fetchDocuments();
+  }, [auth.currentUser]);
 
   return (
     <div className='main'>
@@ -44,16 +52,15 @@ function Main() {
       <hr />
       <h2>Recent Documents</h2>
       <div className="main__container">
-      {documents.map(({id, data : {content, fileName, timestamp, }}) => (
-        <Card
-        id={id} 
-        key={id}
-        title={fileName}
-        description={content}
-        date={timestamp}
-        />
-      ))}
-      console.log(data);
+        {documents.map(({ id, data: {content, fileName, timestamp } }) => (
+          <Card
+            id={id}
+            key={id}
+            title={fileName}
+            description={content}
+            date={timestamp}
+          />
+        ))}
       </div>
     </div>
   );
