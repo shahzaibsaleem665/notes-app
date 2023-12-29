@@ -18,5 +18,8 @@ h1 {
 }
 .home__image > img {
     width: fit-content;
-    height: 50vh;
+    height: 40vh;
+}
+.home__image:hover {
+    cursor: pointer;
 }

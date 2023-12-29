@@ -4,60 +4,29 @@ import EditorToolbar, { modules, formats } from "./EditorToolbar";
 import "react-quill/dist/quill.snow.css";
 import "./TextEditor.css";
 import { Button } from "@mui/material";
-import  { auth, db } from "../utilities/Firebase";
 import jsPDF from "jspdf";
 import html2pdf from "html2pdf.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import logo1 from '../assets/logo1.png'
-import firebase from 'firebase/compat/app';
+import logo1 from '../assets/logo1.png';
 
 export const TextEditor = () => {
-  const user = auth.currentUser?.uid;
   const history = useHistory();
-  const [state, setState] = useState({ value: "", fileName: "document.pdf" });
+  const [state, setState] = useState({ value: "" });
+  const quillRef = React.createRef();
 
   useEffect(() => {
-    setState({ value: "", fileName: "document" });
+    setState({ value: "" });
   }, []);
 
   const handleChange = (value) => {
     setState((prev) => ({ ...prev, value }));
   };
 
-  const handleFilenameChange = (e) => {
-    const newFileName = e.target.value;
-    setState((prev) => ({ ...prev, fileName: newFileName }));
-  };
-
-  const handleSave = () => {
-    const { value, fileName } = state;
-  if (user)  {
-      db.collection('Docs').add({
-        content: value,
-        fileName,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    }
-  };
-
-  const handleChanges = () => {
-   
-    handleSaveAsPDF();
-    handleSave();
-  };
-
   const handleSaveAsPDF = () => {
-    const { value, fileName } = state;
+    const quill = quillRef.current.getEditor();
+    const htmlContent = quill.root.innerHTML;
 
-    if (value) {
-      const newFileName = window.prompt("Enter the file name:", fileName);
-
-      if (newFileName === null || newFileName.trim() === "") {
-        return;
-      }
-
-      setState((prev) => ({ ...prev, fileName: newFileName }));
-
+    if (htmlContent) {
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -68,42 +37,36 @@ export const TextEditor = () => {
         marginBottom: 20,
       });
 
-      html2pdf(value, {
-        margin: 10,
+      html2pdf(htmlContent, {
+        margin: 15,
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         html2canvas: { scale: 2 },
         callback: (pdf) => {
-          pdf.save(newFileName); // Use the updated filename here
-          setState({ value: "", fileName: "document" });
+          pdf.save();
         },
       });
 
-      history.push("/main");
+      history.push("/");
     }
   };
 
   return (
     <div className="textEditor">
       <div className="textEditor__header">
-        <img src={logo1} onClick={() => history.push('/main')} />
-      <input
-        type="text"
-        placeholder={state.fileName}
-        value={state.fileName}
-        onChange={handleFilenameChange}
-      />
+        <img src={logo1} onClick={() => history.push('/')} />
       </div>
       <EditorToolbar />
       <ReactQuill
         theme="snow"
+        ref={quillRef}
         value={state.value}
         onChange={handleChange}
-        placeholder={"Start taking notes...."}
+        placeholder={"Write something to begin...."}
         modules={modules}
         formats={formats}
         style={{ height: "500px" }}
       />
-      <Button onClick={handleChanges}>Save as Pdf</Button>
+      <Button onClick={handleSaveAsPDF}>Save as Pdf</Button>
     </div>
   );
 };
